@@ -1654,3 +1654,18 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+.modal-body img {
+  display: block;
+  margin: 0 auto; /* pag center sa img sa modal */
+  max-width: 350px; /* pag adjust */
+}
+
+.card-body {
+  text-align: center; /* pag center sa text sa card */
+}
+
+.card-body .btn {
+  display: block;
+  margin: 0 auto; /* ini naman sa button */
+}
