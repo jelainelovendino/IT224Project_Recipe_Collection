@@ -1661,11 +1661,37 @@ section,
   max-width: 350px; /* pag adjust */
 }
 
+.card{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
 .card-body {
   text-align: center; /* pag center sa text sa card */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.row{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
 }
 
 .card-body .btn {
   display: block;
   margin: 0 auto; /* ini naman sa button */
 }
+
+.card-text {
+  min-height: 60px;
+}
+
