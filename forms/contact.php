@@ -1,41 +1,47 @@
 <?php
-  /**
-  * Requires the "PHP Email Form" library
-  * The "PHP Email Form" library is available only in the pro version of the template
-  * The library should be uploaded to: vendor/php-email-form/php-email-form.php
-  * For more info and help: https://bootstrapmade.com/php-email-form/
-  */
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-  // Replace contact@example.com with your real receiving email address
-  $receiving_email_address = 'contact@example.com';
+require __DIR__ . '/../vendor/autoload.php'; // Import PHPMailer
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
-    include( $php_email_form );
-  } else {
-    die( 'Unable to load the "PHP Email Form" Library!');
-  }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $subject = $_POST['subject'] ?? '';
+    $message = $_POST['message'] ?? '';
 
-  $contact = new PHP_Email_Form;
-  $contact->ajax = true;
-  
-  $contact->to = $receiving_email_address;
-  $contact->from_name = $_POST['name'];
-  $contact->from_email = $_POST['email'];
-  $contact->subject = $_POST['subject'];
+    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
+        die("Error: All fields are required!");
+    }
 
-  // Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-  /*
-  $contact->smtp = array(
-    'host' => 'example.com',
-    'username' => 'example',
-    'password' => 'pass',
-    'port' => '587'
-  );
-  */
+    $mail = new PHPMailer(true);
+    
+    try {
+        // SMTP Settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
+        $mail->SMTPAuth = true;
+        $mail->Username = 'jelainelovendino@gmail.com'; // Palitan ng email mo
+        $mail->Password = 'rwkp mkwt ksqs kbhk'; // Gumamit ng App Password, hindi normal password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-  $contact->add_message( $_POST['name'], 'From');
-  $contact->add_message( $_POST['email'], 'Email');
-  $contact->add_message( $_POST['message'], 'Message', 10);
+        // Email Settings
+        $mail->setFrom($email, $name);
+        $mail->addAddress('jelainelovendino@gmail.com'); // Tatanggap ng email
 
-  echo $contact->send();
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        if ($mail->send()) {
+            echo "OK";
+        } else {
+            echo "Error: Unable to send email.";
+        }
+    } catch (Exception $e) {
+        echo "Error: {$mail->ErrorInfo}";
+    }
+} else {
+    die("Error: Invalid request.");
+}
 ?>
